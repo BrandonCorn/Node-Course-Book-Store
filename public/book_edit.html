@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link type="text/css" rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div>
+            <a href="index.html">Home</a>
+            <a href="add_book.html">Add book</a>
+            <a href="add_store.html">Add Store</a>
+        </div>
+    </header>
+    <div class="container">
+        <h2>Add a Book</h2>
+        <form id="books_form">
+
+            <div class="form-element">
+                <label>Add a book name:</label>
+                <input type="text" name="name" id="name">
+            </div>
+
+            <div class="form-element">
+                <label>Add the author:</label>
+                <input type="text" name="author" id="author">
+            </div>
+
+            <div class="form-element">
+                <label>Number of pages:</label>
+                <input type="text" name="pages" id="pages">
+            </div>
+
+            <div class="form-element">
+                <label>Price:</label>
+                <input type="text" name="price" id="price">
+            </div>
+
+            <div class="form-element">
+                <label>Stores:</label>
+                <select name="stores" id="stores" multiple>
+                </select>
+            </div>
+
+
+            <div class="form-element">
+                <button type="submit">Add Book</button>
+            </div>
+        </form>
+        
+        <div class="deleteBook"> 
+            <button type = "click"> Delete Book </button>
+        </div> 
+    </div>
+
+
+
+</body>
+<script> 
+    $.ajax({
+        type : "GET", 
+        url : 'http://localhost:3000/api/stores', 
+        success : (data, status, xhr) => {
+            data.map( item => {
+                $('#stores').append($('<option>',{
+                    value : item.name,
+                    text : item.name
+                }))
+            });  
+        }, 
+        error : (xhr) => {
+            console.log("Could not load stores"); 
+        }
+    });
+
+    let searchParams = new URLSearchParams(window.location.search); //?id=123445
+    let bookId = searchParams.get("book_id"); 
+    $.ajax({
+        type : "GET", 
+        url : `http://localhost:3000/api/books/${bookId}`, 
+        success : (data,status,xhr) => {
+            $('#name').val(data.name);
+            $('#author').val(data.author); 
+            $('#pages').val(data.pages); 
+            $('#price').val(data.price); 
+            $('#stores').val(data.stores);  
+        }, 
+        error : (xhr) => {
+            alert('Error loading the book by id'); 
+        }
+    }); 
+
+    $('#books_form').submit( e => {
+        e.preventDefault(); 
+        let book = {
+            name : $('#name').val(), 
+            author : $('#author').val(), 
+            pages : $('#pages').val(), 
+            price : $('#price').val(), 
+            stores : $('#stores').val()
+        }
+
+        $.ajax({
+            type : "PATCH", 
+            url : `http://localhost:3000/api/add/books/${bookId}`, 
+            data : JSON.stringify(book), 
+            contentType : 'application/json', 
+            success : (data,status,xhr) => {
+                console.log(data); 
+                alert('Book updated'); 
+                window.location.href = "/"; 
+            }, 
+            error : (xhr) => {
+                alert("Something went wrong with book update"); 
+            }
+        }); 
+    }); 
+
+    $('.deleteBook').click( () => {
+        $.ajax({
+            type : "DELETE", 
+            url : `http://localhost:3000/api/delete/books/${bookId}`,
+            success : (data,status,xhr) => {
+                alert('Book successfully deleted'); 
+                window.location.href = "/"; 
+            }, 
+            error : (xhr) => {
+                alert("Something went wrong with deleting the book"); 
+            }
+        }); 
+    }); 
+
+</script> 
+</html>
