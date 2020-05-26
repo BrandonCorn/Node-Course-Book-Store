@@ -51,7 +51,7 @@
         let phone = $('#phone').val(); 
         $.ajax({
             type : "POST", 
-            url : "http://localhost:3000/api/add/store", 
+            url : "/api/add/store", 
             data : JSON.stringify({name,address,phone}),
             contentType : "application/json", 
             success : (data, status, xhr) => {

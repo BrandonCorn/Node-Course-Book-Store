@@ -51,7 +51,7 @@
                 <button type="submit">Add Book</button>
             </div>
         </form>
-        
+
         <div class="deleteBook"> 
             <button type = "click"> Delete Book </button>
         </div> 
@@ -63,7 +63,7 @@
 <script> 
     $.ajax({
         type : "GET", 
-        url : 'http://localhost:3000/api/stores', 
+        url : '/api/stores', 
         success : (data, status, xhr) => {
             data.map( item => {
                 $('#stores').append($('<option>',{
@@ -81,7 +81,7 @@
     let bookId = searchParams.get("book_id"); 
     $.ajax({
         type : "GET", 
-        url : `http://localhost:3000/api/books/${bookId}`, 
+        url : `/api/books/${bookId}`, 
         success : (data,status,xhr) => {
             $('#name').val(data.name);
             $('#author').val(data.author); 
@@ -106,7 +106,7 @@
 
         $.ajax({
             type : "PATCH", 
-            url : `http://localhost:3000/api/add/books/${bookId}`, 
+            url : `/api/add/books/${bookId}`, 
             data : JSON.stringify(book), 
             contentType : 'application/json', 
             success : (data,status,xhr) => {
@@ -123,7 +123,7 @@
     $('.deleteBook').click( () => {
         $.ajax({
             type : "DELETE", 
-            url : `http://localhost:3000/api/delete/books/${bookId}`,
+            url : `/api/delete/books/${bookId}`,
             success : (data,status,xhr) => {
                 alert('Book successfully deleted'); 
                 window.location.href = "/"; 

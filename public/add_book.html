@@ -59,7 +59,7 @@
 <script> 
     $.ajax({
         type : "GET", 
-        url : 'http://localhost:3000/api/stores', 
+        url : '/api/stores', 
         success : (data, status, xhr) => {
             data.map( item => {
                 $('#stores').append($('<option>',{
@@ -86,7 +86,7 @@
 
         $.ajax({
             type : "POST", 
-            url : 'http://localhost:3000/api/add/books', 
+            url : '/api/add/books', 
             data : JSON.stringify(book),
             contentType : "application/json",
             success : (data,status,xhr) => {

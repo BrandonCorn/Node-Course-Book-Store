@@ -27,7 +27,7 @@
 <script> 
     $.ajax({
         type : "GET", 
-        url : "http://localhost:3000/api/booklist?limit=5&ord=asc", 
+        url : "/api/booklist?limit=5&ord=asc", 
         success : (data,status,xhr) => {
             let template = ``; 
             data.map(item => {
