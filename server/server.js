@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 
 //DB
 mongoose.Promise = global.Promise; 
-mongoose.connect('mongodb://localhost:27017/book_db', 
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/book_db', 
     {
         useNewUrlParser : true, 
         useUnifiedTopology : true
